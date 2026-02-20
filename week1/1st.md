@@ -101,6 +101,13 @@ Q6. Dbeaver를 통해 Postgres DB에 Airflow의 MetaDB가 정상적으로 initia
 ```
 
 
+### Step 7. 리소스 정리
+
+```
+Q7. 실습이 끝났다면 생성한 컨테이너와 볼륨, 네트워크를 모두 삭제해주세요.
+```
+
+
 ---
 ## ✅ 모범 답안 (Model Answer)
 
@@ -177,6 +184,27 @@ docker ps -a # 전체
 ### A6. 서비스 확인
 
 * A6.png 참고
+
+### A7. 리소스 정리
+
+```
+# 컨테이너 중지 및 삭제
+docker stop airflow postgres-db
+docker rm airflow postgres-db
+
+# 볼륨 삭제
+docker volume rm postgres-data
+docker volume ls # 확인
+
+# 네트워크 삭제
+docker network rm airflow-net
+docker network ls # 확인
+```
+
+* 설명
+    * docker rm -f: 실행 중인 컨테이너를 강제로 중지하고 삭제합니다.
+    * docker volume rm: 생성했던 도커 볼륨을 삭제하여 데이터를 정리합니다.
+    * docker network rm: 생성했던 사용자 정의 네트워크를 삭제합니다.
 
 ---
 💡 추가 학습 포인트 (Troubleshooting)
