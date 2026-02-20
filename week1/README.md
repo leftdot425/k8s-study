@@ -205,10 +205,3 @@ docker network ls # 확인
     * docker rm -f: 실행 중인 컨테이너를 강제로 중지하고 삭제합니다.
     * docker volume rm: 생성했던 도커 볼륨을 삭제하여 데이터를 정리합니다.
     * docker network rm: 생성했던 사용자 정의 네트워크를 삭제합니다.
-
----
-💡 추가 학습 포인트 (Troubleshooting)
-만약 3.1.7-python3.13 이미지가 Airflow 공식 이미지라면, 단순히 실행만 해서는 DB와 연결되지 않고 자체 내장 DB(SQLite)를 쓰거나 초기화가 필요할 수 있습니다. 실제 운영 환경처럼 구성하려면 docker run 시 Airflow의 DB 연결 환경변수를 추가해야 합니다.
-예시 (참고용):
--e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres-db/airflow
-* 여기서 @postgres-db 부분이 우리가 A2에서 설정한 컨테이너 이름(--name)입니다. 도커 네트워크 덕분에 이 이름이 IP 주소처럼 작동합니다.
