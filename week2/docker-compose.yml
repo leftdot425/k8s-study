@@ -1,0 +1,36 @@
+services:
+  postgres-db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    # networks:
+    #   - airflow-net
+
+  airflow:
+    image: my-airflow:1.0    # 빌드한 커스텀 이미지 사용
+    container_name: airflow
+    environment:
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres-db/airflow
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags    # 로컬의 dags 폴더 마운트
+    command: airflow standalone
+    # networks:
+    #   - airflow-net
+    depends_on:
+      - postgres-db                 # 컨테이너 실행 순서 제어
+
+# networks:
+#   airflow-net:
+#     driver: bridge
+
+volumes:
+  postgres-data:
