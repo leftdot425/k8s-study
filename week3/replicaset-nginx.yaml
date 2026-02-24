@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-nginx
+spec:
+  # define replicaset
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-nginx-pods-label # 레플리카셋은 해당 라벨을 통해 생성해야하는 포드를 찾음, 즉 app: my-nginx-pods-label 라벨이 붙은 포드 개수 == replicas 수와 같게 함
+  template:
+    # define pod
+    metadata:
+      name: my-nginx-pod
+      labels:
+        app: my-nginx-pods-label
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80

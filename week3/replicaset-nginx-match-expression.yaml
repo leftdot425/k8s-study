@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-nginx
+spec:
+  # define replicaset
+  replicas: 2
+  selector:
+    matchExpressions:
+    - key: app
+      values:
+        - my-nginx-pods-label
+        - your-nginx-pods-label
+      operator: In # matchLabels는 operator가 항상 In이지만, matchExpressions는 operator가 다양할 수 있음
+  template:
+    # define pod
+    metadata:
+      name: my-nginx-pod
+      labels:
+        app: my-nginx-pods-label
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
