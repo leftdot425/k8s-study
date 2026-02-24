@@ -44,6 +44,7 @@ kubectl delete -f nginx-pod-with-ubuntu.yaml
 * 하나의 포드는 하나의 완전한 애플리케이션이며, 로그 수집 등이 필요할 때 사이드카 컨테이너를 생성해서 사용함
 
 ## 6.3 레플리카셋(Replica Set): 일정 개수의 포드를 유지하는 컨트롤러
+![ReplicaSet](replicaset.png)
 * 사용이유: 정해진 수의 동일한 포드가 항상 실행되도록 관리(e.g. 노드 장애 등의 이유로 포드를 사용할 수 없을 때 다른 노드에서 포드를 다시 생성)
 
 ### 6.3.2 레플리카셋 사용하기
@@ -68,6 +69,8 @@ kubectl delete rs replicaset-nginx
 ## 6.4 디플로이먼트(Deployment): 레플리카셋, 포드의 배포를 관리
 
 ### 6.4.1 디플로이먼트 사용하기
+
+![Deployment](deployment.png)
 * 대부분은 레플리카셋과 포드의 정보를 정의하는 디플로이먼트(Deployment) 오브젝트를 YAML파일에 정의해 사용함
 * 디플로이먼트는 레플리카셋의 상위 오브젝트이기에 디플로이먼트를 생성하면 해당 디플로이먼트에 해당되는 레플리카셋도 함께 생성됨
 
@@ -82,6 +85,7 @@ kubectl delete -f deployment-nginx.yaml
 ```
 
 ### 6.4.2 디플로이먼트를 사용하는 이유
+![Deployment2](deployment2.png)
 * 애플리케이션의 업데이트와 배포를 더욱 편하게 하기 위함
     * 레플리카셋의 변경 사항을 저장하는 리비전(revision)을 남겨 롤백 가능하게 함
     * 무중단 서비스를 위해 포드의 롤링 업데이트의 전략을 지정할 수 있음
