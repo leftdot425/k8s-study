@@ -10,7 +10,7 @@ minikube start
 
 ### 6.2.1 포드 사용하기
 
-```
+```bash
 # nginx-pod.yaml
 kubectl apply -f nginx-pod.yaml
 
@@ -28,7 +28,7 @@ kubectl delete -f nginx-pod.yaml # kubectl delete pod my-nginx-pod
 
 ### 6.2.2 포드 vs 도커 컨테이너
 
-```
+```bash
 # nginx-pod-with-ubuntu.yaml
 kubectl apply -f nginx-pod-with-ubuntu.yaml
 
@@ -49,7 +49,7 @@ kubectl delete -f nginx-pod-with-ubuntu.yaml
 
 ### 6.3.2 레플리카셋 사용하기
 
-```
+```bash
 kubectl apply -f replicaset-nginx.yaml
 
 kubectl get rs
@@ -90,7 +90,7 @@ kubectl delete -f deployment-nginx.yaml
     * 레플리카셋의 변경 사항을 저장하는 리비전(revision)을 남겨 롤백 가능하게 함
     * 무중단 서비스를 위해 포드의 롤링 업데이트의 전략을 지정할 수 있음
 
-```
+```bash
 # --record=true 옵션으로 디플로이먼트를 변경하면 변경사항을 위와 같이 디플로이먼트에 기록함
 kubectl apply -f deployment-nginx.yaml --record
 
