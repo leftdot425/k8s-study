@@ -27,6 +27,7 @@ kubectl delete -f nginx-pod.yaml # kubectl delete pod my-nginx-pod
 ```
 
 ### 6.2.2 포드 vs 도커 컨테이너
+* 포드는 여러 컨테이너들을 추상화된 집합으로 사용하기 위함
 
 ```bash
 # nginx-pod-with-ubuntu.yaml
