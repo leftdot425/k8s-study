@@ -67,7 +67,7 @@ kubectl run -i --tty --rm debug --namespace ed --image=alicek106/ubuntu:curl --r
 ![ClusterIP](clusterip.png)
 
 1. 특정 Label을 가지는 Pod를 서비스와 연결하기 위해 서비스의 YAML 파일에 selector 항목을 정의합니다.
-2. ㅖㅐㅇ에 접근할 때 사용하는 Port(포드에 설정된 containerPort)를 YAML 파일의 targetPort 항목에 정의합니다.
+2. 포드에 접근할 때 사용하는 Port(포드에 설정된 containerPort)를 YAML 파일의 targetPort 항목에 정의합니다.
 3. 서비스를 생성할 때, YAML 파일의 port 항목에 8080을 명시하여 서비스의 ClusterIP와 8080 포트로 접근할 수 있게 설정합니다.
 4. kubectl apply 명령어로 ClusterIP 타입의 서비스가 생성되면, 서비스는 쿠버네티스 클러스터 내부에서만 사용할 수 있는 고유한 내부 IP를 할당받습니다.
 5. 쿠버네티스 클러스터 내에서 서비스의 내부 IP 또는 서비스 이름으로 포드에 접근할 수 있습니다.
@@ -118,7 +118,7 @@ curl 170.21.202.118:32362 --silent | grep Hello
 ```
 
 
-* NodePort 타입 서비스는 CLusterIP 타입 서비스의 기능을 포함하기에, NodePort 타입의 서비스를 생ㄷ성하면 자동으로 CLusterIP의 기능을 사용할 수 있음
+* NodePort 타입 서비스는 CLusterIP 타입 서비스의 기능을 포함하기에, NodePort 타입의 서비스를 생성하면 자동으로 CLusterIP의 기능을 사용할 수 있음
 
 ```bash
 kubectl run -i --tty --rm debug --namespace ed --image=alicek106/ubuntu:curl --restart=Never -- bash
@@ -128,7 +128,7 @@ kubectl run -i --tty --rm debug --namespace ed --image=alicek106/ubuntu:curl --r
 # <p>Hello, hostname-deployment-7b57c676b9-gz54r</p>
 ```
 
-* NodePort 트래픅 흐름
+* NodePort 트래픽 흐름
 
 ![NodePort](nodeport.png)
 
@@ -146,9 +146,33 @@ kubectl run -i --tty --rm debug --namespace ed --image=alicek106/ubuntu:curl --r
 
 
 ### 6.5.4 클라우드 플랫폼의 로드 밸런서와 연동하기 - LoadBalancer 타입의 서비스
-* 330p
-
 * https://www.notion.so/khcmst/1bcd87e517f48033aa4cc9bfee138f2b?source=copy_link
+* 사내 K8S에 metallb 설치되어 있음
+
+
+```bash
+kubectl apply -f hostname-svc-lb.yaml -n ed
+
+kubectl get svc -n ed
+# NAME                    TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
+# hostname-svc-lb         LoadBalancer   10.111.249.66   170.22.14.80    80:31655/TCP     7s
+# hostname-svc-nodeport   NodePort       10.96.26.98     <none>          8080:32362/TCP   21h
+
+curl 170.22.14.80 --silent | grep Hello
+# <p>Hello, hostname-deployment-7b57c676b9-gz54r</p
+
+# 실제 노드 IP
+# 포트는 로드밸런서의 포트이며, 이 포트는 각 노드에서 동일하게 접근할 수 있는 포트를 의미함
+# 즉 아래와 같이 각 노드의 IP로 접근하면 위의 로드 밸런서와 똑같이 접근할 수 있음
+curl 170.22.14.156:31655 | grep Hello
+# <p>Hello, hostname-deployment-7b57c676b9-h8b9t</p>
+```
+
+![loadbalancer](loadbalancer.png)
+
+1. LoadBalancer 타입의 서비스가 생성됨과 동시에 모든 워커 노드는 파드에 접근할 수 있는 랜덤한 포트를 개방합니다. 위의 예시에서는 32620 포트가 개방됨 (실습에서는 31655)
+2. 클라우드 플랫폼에서 생성된 로드 밸런서로 요청이 들어오면 이 요청은 쿠버네티스의 워커 노드 중 하나로 전달되며, 이때 사용되는 포트는 1번에서 개방된 포트인 32620 포트임
+3. 워커 노드로 전달된 요청은 파드 중 하나로 전달되어 처리됨
 
 ---
 
