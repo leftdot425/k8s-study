@@ -393,12 +393,9 @@ kubectl create configmap my-configmap --from-literal mykey=myvalue --dry-run -o 
 # metadata:
 #   name: my-configmap
 #   namespace: ed
+```
 
 * 키-값 데이터가 너무 많아질 경우 YAML 파일이 너무 길어져 `kustomize` 기능을 활용함
-
-## KHC ConfigMap & Secret
-* https://www.notion.so/khcmst/Airflow-21bd87e517f480a7acfdf70736ddcbed?source=copy_link
-* https://github.com/khc-dp/hrs-data-deploy/blob/develop/3.restart.sh
 
 ### 7.2.2 시크릿(Secret)
 
@@ -507,7 +504,6 @@ kubectl apply -k ./ -n ed
 kubectl delete -k ./ -n ed
 ```
 
-
 * 컨피그맵이나 시크릿을 업데이트하기
     * kubectl edit 명령어로 수정
     * YAML 파일을 변경한 뒤 다시 kubectl apply 명령어 사용
@@ -515,9 +511,10 @@ kubectl delete -k ./ -n ed
 * 환경 변수로 포드 내부 설정값을 한 경우 컨피그맵이나 시크릿의 값을 변경해도 자동으로 설정되지 않으며, 포드를 재생성해야함
 * 파일로 포드 내부에 마운트된 설정 파일의 경우, 파일의 내용은 자동으로 갱신됨, 그러나 어플리케이션의 설정이 자동으로 변경되는 것은 아니며, 이는 개발자의 몫임
 
-```bash
 
-```
+## KHC ConfigMap & Secret
+* https://www.notion.so/khcmst/Airflow-21bd87e517f480a7acfdf70736ddcbed?source=copy_link
+* https://github.com/khc-dp/hrs-data-deploy/blob/develop/3.restart.sh
 
 ---
 
