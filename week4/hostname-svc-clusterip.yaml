@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hostname-svc-clusterip
+spec:
+  ports:
+    - name: web-port
+      # 생성된 서비스는 k8s 내부에서만 사용할 수 있는 고유한 IP(ClusterIP)를 할당 받음
+      # port 항목에는 서비스의 IP에 접근할 때 사용할 포트를 설정함
+      port: 8080
+      # selector 항목에서 정의한 라벨에 의해 접근 대상이 된 포드들이 내부적으로 사용하고 있는 포트를 입력
+      # `deployment-hostname.yaml` 파일의 containerPort 항목에서 포드가 사용할 포트로 80을 선언했기 때문 ports.targetPort 항목 또한 80으로 설정해야함
+      targetPort: 80
+  # selector 항목은 이 서비스에서 어떠한 라벨을 가지는 포드에 접근할 수 있게 만들 것인지 결정
+  selector:
+    app: webserver # `deployment-hostname.yaml` 파일로 생성된 디플로이먼트의 포드는 이 라벨이 설정되어 있으므로 이 서비스에 의해 접근 가능한 대상으로 추가됨
+  # 이 서비스가 어떤 타입인지 나타냄 (ClusterIP | NodePort | LoadBalancer)
+  type: ClusterIP
